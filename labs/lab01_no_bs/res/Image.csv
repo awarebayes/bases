@@ -1,0 +1,101 @@
+ID,Owner,Name,Downloads,NeedDevice,Size,DockerVersion,Runtime
+1,Oliver Ltd,traefik,0,False,2.0572796707116425,57.47.76,docker-compose
+2,Kane-Stevens,kapacitor,3,True,4.116285207481907,2.33.19,cri-o
+3,"Smith, Hebert and Rodriguez",bitnami/external-dns,58,False,24.68780638672753,46.65.36,docker
+4,Dickson-Mason,nats,17,True,52.38416368676446,50.44.73,cri-o
+5,Smith-Butler,amazon/aws-for-fluent-bit,68,True,21.98681185731406,84.56.14,docker-compose
+6,Hernandez Group,open-liberty,32,False,56.76854638416749,17.34.97,docker
+7,Summers-Powell,bonita,29,False,43.713494151876596,37.82.36,docker
+8,"Taylor, Gillespie and Vega",gazebo,70,False,38.96113681485824,22.2.65,docker
+9,"Porter, Martin and White",yourls,86,False,85.92049885092837,2.90.6,cri-o
+10,Kennedy Group,gradle,87,False,35.04821700829777,55.92.34,cri-o
+11,Smith-Powell,fsharp,56,True,82.43485442336883,40.79.14,containerd
+12,"Gay, Ellis and Valenzuela",bitnami/postgresql,21,True,76.9259567693283,10.0.1,podman
+13,Moore-Perez,clojure,37,False,98.86706897399044,51.59.8,nvidia-docker
+14,"Barry, Sutton and Reynolds",monica,21,True,61.528599476472365,94.10.46,podman
+15,Gray-Jacobs,ubuntu-upstart,39,False,32.226737920189855,24.23.77,cri-o
+16,Lloyd-Wyatt,silverpeas,91,False,96.82453875934493,60.74.38,docker
+17,"Wheeler, Johnson and Griffith",Kaazing,92,True,86.04437579468456,49.7.16,podman
+18,Shelton-Thompson,ghost,60,False,19.790072081481792,39.72.43,docker
+19,Martin PLC,flink,35,True,13.438733988004737,78.83.21,docker
+20,Ford Ltd,registry,85,False,40.43021863981967,79.45.76,docker-compose
+21,"Phelps, Fuller and Martin",odoo,59,False,64.85886810789495,91.58.24,podman
+22,Austin Inc,datadog/agent,55,False,56.362836932779395,75.35.42,podman
+23,Mcdonald-Clark,rapidoid,97,False,7.305935544170639,78.29.90,nvidia-docker
+24,Lopez-Harmon,backdrop,82,True,60.94435913748032,42.0.76,nvidia-docker
+25,"Wolfe, Howard and Foster",ubuntu,1,True,62.4941239425716,43.25.98,cri-o
+26,"Beasley, Thomas and Woods",varnish,47,False,56.41512169547083,88.82.36,docker
+27,"Washington, Garza and Wells",photon,87,True,13.459683771106567,5.3.54,docker-x11
+28,Davis-Matthews,owncloud,10,True,1.1819855336236529,61.12.20,docker-x11
+29,Fisher LLC,ubuntu-upstart,14,False,7.119149561065418,1.96.50,nvidia-docker
+30,"Cole, Wilson and Sanders",mono,26,True,12.619379072204884,40.59.24,docker-x11
+31,Johnson Inc,kibana,4,True,3.3925215627479965,53.81.38,cri-o
+32,Gordon and Sons,sl,57,False,21.536153449151797,33.18.75,docker
+33,"Snyder, Miller and Pena",gazebo,38,False,54.13224686944888,49.79.92,docker
+34,Martin-Barrett,bitnami/rabbitmq,11,True,41.711849178388725,2.33.8,cri-o
+35,Duran Group,satosa,89,False,39.327748797282034,43.51.92,nvidia-docker
+36,Perry Ltd,rockylinux,29,False,86.22966002202865,71.71.52,podman
+37,"Roberson, Roberts and Fuller",ubuntu-debootstrap,49,True,70.86859762364496,83.63.48,docker-x11
+38,Lynch-Downs,mediawiki,87,False,49.330976812164984,12.54.39,podman
+39,"Solis, Oneal and Anderson",rethinkdb,31,False,70.38414692651614,17.17.66,docker-x11
+40,"Krause, Williams and Brown",backdrop,3,False,29.738541367336257,68.78.80,containerd
+41,"Grant, Ruiz and Williams",cirros,90,False,25.419681471214695,55.77.17,podman
+42,Jackson-Mason,alpine,10,True,39.711650235170524,8.54.56,docker
+43,Webster and Sons,spiped,75,False,59.448539347767415,75.61.53,docker-x11
+44,Lewis PLC,piwik,30,False,71.00602440283753,76.3.82,podman
+45,Gonzalez and Sons,percona/percona-xtradb-cluster-operator,72,False,30.729465938319976,41.7.87,containerd
+46,"Simon, Berry and Hall",friendica,1,True,3.7126521075744434,20.49.82,docker-x11
+47,"Reynolds, Frey and Reynolds",dcl2020,74,False,34.079538436436195,66.81.12,docker-x11
+48,"Dennis, Lopez and Alexander",lightstreamer,67,False,76.16277979901602,91.25.34,docker-compose
+49,Schwartz and Sons,znc,31,True,49.691987008954754,93.4.8,containerd
+50,Espinoza-James,hashicorp/terraform,16,False,66.34122465393837,19.84.79,containerd
+51,Paul Group,geonetwork,20,True,68.73650298593557,58.39.5,docker-compose
+52,Benjamin-King,amazoncorretto,15,True,66.5554537957954,10.18.81,podman
+53,Howard and Sons,docker/aci-hostnames-sidecar,92,False,89.72490070879935,6.91.54,containerd
+54,Nguyen-Garcia,xwiki,92,False,24.68856465601066,78.47.100,podman
+55,Webb-Olson,sourcemage,32,False,90.59675859613299,3.10.22,nvidia-docker
+56,"Evans, Patterson and Price",rapidoid,47,False,11.7872047874103,43.97.66,containerd
+57,"Craig, Ortega and Hoover",wordpress,44,True,49.53037407705647,93.68.32,cri-o
+58,Torres Ltd,couchbase,57,False,18.40062855418738,4.64.75,docker-x11
+59,Walker-Waller,phpmyadmin,72,True,21.856881938494254,91.7.21,docker-x11
+60,Baldwin-Sanchez,mono,10,False,77.75050058945067,85.41.60,containerd
+61,"Harris, Harding and Jacobs",amazonlinux,55,False,86.57622857724577,49.43.25,docker-x11
+62,"Robinson, Pollard and Gallegos",yourls,99,False,85.98548458530809,10.18.60,containerd
+63,Brown-Maxwell,geonetwork,92,False,38.17501029791944,33.73.40,docker
+64,Watson-Waller,lacework/datacollector,54,True,43.909807292282125,30.59.24,podman
+65,"Nelson, Abbott and Diaz",google/cadvisor,45,True,45.914099529516726,10.3.76,nvidia-docker
+66,Weber-Gonzalez,portainer/portainer-ce,28,False,74.21439267737571,48.32.75,docker-compose
+67,Harper-White,crate,19,True,96.81044058093782,16.15.28,docker-compose
+68,Whitehead and Sons,nginx,15,True,83.30314296551407,12.4.8,nvidia-docker
+69,"Reese, Black and Figueroa",crate,54,False,38.976478339547036,71.57.38,docker
+70,Hodges Ltd,python,82,False,93.61156871424913,11.71.67,podman
+71,Houston-Warner,amazoncorretto,34,False,30.637034479392643,71.52.92,docker
+72,Oneal PLC,solr,76,True,75.86334516569659,12.97.66,podman
+73,Parker-Martinez,circleci/mysql,71,False,4.343272341170568,14.22.61,docker-x11
+74,Webster-Garcia,bonita,9,True,18.17023513869691,14.41.82,docker-x11
+75,Parsons Ltd,piwik,13,True,90.96311230206186,43.52.94,podman
+76,"Holloway, Hurley and Morales",amazon/cloudwatch-agent,50,True,70.99791835192933,28.52.45,containerd
+77,Santana-Sloan,express-gateway,73,False,57.60179875583288,31.50.90,docker-x11
+78,Bentley LLC,sapmachine,46,True,55.027913935480285,94.81.39,docker-x11
+79,"Perez, Phillips and Rodriguez",bonita,96,True,3.7582959431275986,61.19.44,containerd
+80,Ellison Group,eclipse-mosquitto,27,False,63.527923558291214,76.44.2,docker-x11
+81,Parrish-Wright,clojure,29,False,63.9422999847843,67.0.44,containerd
+82,Ford Ltd,php-zendserver,81,True,68.95581616214521,53.65.77,docker-compose
+83,Mayer-Smith,hello-world,42,False,20.046457687595698,18.1.83,docker
+84,Franklin Inc,elixir,76,False,38.93611802431123,25.39.28,cri-o
+85,Lowery-Dean,convertigo,74,False,58.02366502332177,97.50.1,podman
+86,"Espinoza, Chan and Green",bitnami/redis,25,True,81.12998957377275,10.12.47,cri-o
+87,Davis-Barr,orientdb,12,False,84.75779015147549,63.31.95,docker-x11
+88,Pierce and Sons,adminer,60,False,33.55462683698121,69.16.42,containerd
+89,Huang-Perkins,ruby,32,True,11.396198337697683,32.9.39,containerd
+90,Adams-Ferguson,celery,48,True,8.676713812341108,52.30.8,containerd
+91,Barr-Jackson,convertigo,39,False,56.65368531664966,36.68.24,docker-compose
+92,Jones and Sons,swarm,68,True,84.11953826228647,41.97.23,cri-o
+93,"Floyd, Reed and Pugh",influxdb,39,True,50.13070712683167,10.45.90,docker-compose
+94,"Simmons, Jones and King",crux,7,True,49.63609531818809,88.51.95,nvidia-docker
+95,Shields PLC,bitnami/zookeeper,17,True,31.429150277930027,43.51.63,containerd
+96,Miller-Farley,newrelic/nrsysmond,82,False,14.084839402481176,46.50.39,docker-x11
+97,Burns Group,mariadb,42,False,84.91342505297243,56.25.24,containerd
+98,"Smith, Kennedy and Edwards",sourcemage,57,True,43.9323607416604,4.97.1,cri-o
+99,"Nelson, Pineda and Hernandez",mediawiki,80,True,50.97109192409657,81.28.89,docker
+100,"Lyons, Reynolds and Davis",mongo,8,True,77.55926103816309,34.95.87,docker-compose
