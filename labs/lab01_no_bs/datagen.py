@@ -5,6 +5,7 @@ import random
 from dataclasses import dataclass, asdict, fields
 from typing import Dict
 import pandas as pd
+from tqdm import tqdm
 
 docker_images = pd.read_csv('res/docker_images.csv', index_col=False, header=0).transpose().iloc[0].tolist()
 
@@ -24,6 +25,12 @@ class Fakable:
             elif field.type == float:
                 setattr(self, field.name, random.random() * 100)
 
+    @staticmethod
+    def max_id_for(foreign_key_name):
+        max_id = Fakable.id_cnt[foreign_key_name]
+        assert max_id > 0, "Table was not generated yet!"
+        return max_id - 1
+
 
 @dataclass
 class Image(Fakable):
@@ -32,7 +39,7 @@ class Image(Fakable):
     Name: str = ''
     Downloads: int = 0
     NeedDevice: bool = False
-    Size: float = 0.0
+    ImageSize: float = 0.0
     DockerVersion: str = ''
     Runtime: str = ''
 
@@ -47,7 +54,6 @@ class Image(Fakable):
         return asdict(self)
 
 
-
 @dataclass
 class Task(Fakable):
     ID: int = 0
@@ -56,17 +62,17 @@ class Task(Fakable):
     NodeID: int     = 0
     ImageID: int = 0
     NeedCUDA: bool = False
-    Status: str = ''
+    Status: int = 0
     DispatcherID: int   = 0
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
-        self.Name = faker.Faker().job()
-        self.Project = faker.Faker().name()
-        self.NodeID = random.randint(0, 1000)
-        self.ImageID = random.randint(0, 1000)
-        self.Status = random.choice(["running", "pending", "failed", "done"])
+        self.Name = faker.Faker().word()
+        self.Project = faker.Faker().word()
+        self.NodeID = random.randint(0, Fakable.max_id_for("Node"))
+        self.ImageID = random.randint(0, Fakable.max_id_for("Image"))
+        self.Status = random.randint(0, Fakable.max_id_for("TaskStatus"))
         self.DispatcherID = random.randint(0, 1000)
 
         return asdict(self)
@@ -78,7 +84,6 @@ class Dispatcher(Fakable):
     Name: str = ''
     Email: str  = ''
     MatterMost: str = ''
-    RoleID: int = 0
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
@@ -86,7 +91,6 @@ class Dispatcher(Fakable):
         self.Name = faker.Faker().name()
         self.Email = faker.Faker().email()
         self.MatterMost = faker.Faker().name()
-        self.RoleID = random.randint(0, 10)
 
         return asdict(self)
 
@@ -94,32 +98,44 @@ class Dispatcher(Fakable):
 class Node(Fakable):
     ID: int = 0
     IP: str = ''
-    RoleIDRequirement: int = 0
+    DeviceCount: int = 0
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
         self.IP = faker.Faker().ipv4()
         self.RoleIDRequirement = random.randint(0, 10)
+        self.DeviceCount = random.randint(0, 8)
 
         return asdict(self)
 
 @dataclass
-class TeamRole(Fakable):
+class TaskStatus(Fakable):
     ID: int = 0
-    Title: str = ''
+    Status: str = ''
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
-
-        self.Title = faker.Faker().job()
-
         return asdict(self)
 
+statuses = []
+available_statuses = ["Preparing", "Synching", "Running", "Completed", "Failed"]
+for status in available_statuses:
+    s = TaskStatus().fake()
+    s['Status'] = status
+    statuses.append(s)
+df = pd.DataFrame(statuses)
+df.to_csv(f"res/TaskStatus.csv", index=False)
 
 
-to_generate = [Image, Task, Dispatcher, Node, TeamRole]
+
+to_generate = [Image, Dispatcher, Node, Task]
 
 for gen in to_generate:
-    df = pd.DataFrame([gen().fake() for _ in range(100)])
+    data = []
+    print()
+    print("Generating", gen.__name__)
+    for _ in tqdm(range(1000)):
+        data.append(gen().fake())
+    df = pd.DataFrame(data)
     df.to_csv(f"res/{gen.__name__}.csv", index=False)
