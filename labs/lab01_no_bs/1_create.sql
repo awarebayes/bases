@@ -3,9 +3,9 @@ CREATE TABLE IF NOT EXISTS images
     id INT NOT NULL PRIMARY KEY,
     owner VARCHAR(128),
     image_name VARCHAR(128),
-    downloads INT CHECK(downloads >= 0),
+    downloads INT, -- CHECK(downloads >= 0),
     need_device BOOLEAN,
-    image_size FLOAT CHECK(image_size > 0),
+    image_size FLOAT, -- CHECK(image_size > 0),
     docker_version VARCHAR(128),
     runtime VARCHAR(128)
 );
@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS task_statuses
 CREATE TABLE IF NOT EXISTS nodes
 (
     id INT NOT NULL PRIMARY KEY,
-    ip VARCHAR(32),
-    device_count INT CHECK(device_count >= 0)
+    ip VARCHAR(32) NOT NULL,
+    device_count INT -- CHECK(device_count >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS dispatchers
@@ -57,9 +57,13 @@ CREATE  TABLE IF NOT EXISTS tasks
     FOREIGN KEY (dispatcher_id) REFERENCES dispatchers(id)
 );
 
-COPY images(id, owner, image_name, downloads, need_device, image_size, docker_version, runtime)
-FROM '/home/dev/Documents/programming/uni/bases/labs/lab01_no_bs/res/Image.csv'
-DELIMITER ','
-CSV HEADER;
+CREATE TABLE IF NOT EXISTS volumes
+(
+    id INT NOT NULL PRIMARY KEY,
 
-select * from images;
+    task_id INT,
+    FOREIGN KEY (task_id) REFERENCES tasks(id)
+
+    host_path VARCHAR(512),
+    container_path VARCHAR(128)
+);

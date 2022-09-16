@@ -1,5 +1,4 @@
 from collections import defaultdict
-from email.policy import default
 import faker 
 import random
 from dataclasses import dataclass, asdict, fields
@@ -8,10 +7,11 @@ import pandas as pd
 from tqdm import tqdm
 
 docker_images = pd.read_csv('res/docker_images.csv', index_col=False, header=0).transpose().iloc[0].tolist()
+faker = faker.Faker()
 
 class Fakable:
 
-    id_cnt = defaultdict(int)
+    id_cnt = defaultdict(lambda: 1)
 
     def fake_(self, super_base) -> Dict:
         for field in fields(self):
@@ -24,6 +24,8 @@ class Fakable:
                 setattr(self, field.name, random.randint(0, 100))
             elif field.type == float:
                 setattr(self, field.name, random.random() * 100)
+            elif field.type == str:
+                setattr(self, field.name, faker.word())
 
     @staticmethod
     def max_id_for(foreign_key_name):
@@ -46,7 +48,7 @@ class Image(Fakable):
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
-        self.Owner = faker.Faker().company()
+        self.Owner = faker.company()
         self.Name = random.choice(docker_images)
         self.DockerVersion = str(random.randint(0, 100)) + "." + str(random.randint(0, 100)) + "." + str(random.randint(0, 100))
         self.Runtime = random.choice(["nvidia-docker", "docker", "containerd", "podman", "cri-o", "docker-compose", "docker-x11"])
@@ -56,31 +58,31 @@ class Image(Fakable):
 
 @dataclass
 class Task(Fakable):
-    ID: int = 0
+    ID: int = 1
     Name: str = ''
     Project: str = ''
-    NodeID: int     = 0
-    ImageID: int = 0
+    NodeID: int     = 1
+    ImageID: int = 1
     NeedCUDA: bool = False
     Status: int = 0
-    DispatcherID: int   = 0
+    DispatcherID: int   = 1
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
-        self.Name = faker.Faker().word()
-        self.Project = faker.Faker().word()
-        self.NodeID = random.randint(0, Fakable.max_id_for("Node"))
-        self.ImageID = random.randint(0, Fakable.max_id_for("Image"))
-        self.Status = random.randint(0, Fakable.max_id_for("TaskStatus"))
-        self.DispatcherID = random.randint(0, 1000)
+        self.Name = faker.word()
+        self.Project = faker.word()
+        self.NodeID = random.randint(1, Fakable.max_id_for("Node"))
+        self.ImageID = random.randint(1, Fakable.max_id_for("Image"))
+        self.Status = random.randint(1, Fakable.max_id_for("TaskStatus"))
+        self.DispatcherID = random.randint(1, Fakable.max_id_for("Dispatcher"))
 
         return asdict(self)
 
 
 @dataclass
 class Dispatcher(Fakable):
-    ID: int = 0
+    ID: int = 1
     Name: str = ''
     Email: str  = ''
     MatterMost: str = ''
@@ -88,48 +90,63 @@ class Dispatcher(Fakable):
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
-        self.Name = faker.Faker().name()
-        self.Email = faker.Faker().email()
-        self.MatterMost = faker.Faker().name()
+        self.Name = faker.name()
+        self.Email = faker.email()
+        self.MatterMost = faker.name()
 
         return asdict(self)
 
 @dataclass
 class Node(Fakable):
-    ID: int = 0
+    ID: int = 1
     IP: str = ''
     DeviceCount: int = 0
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
-        self.IP = faker.Faker().ipv4()
-        self.RoleIDRequirement = random.randint(0, 10)
+        self.IP = faker.ipv4()
         self.DeviceCount = random.randint(0, 8)
 
         return asdict(self)
 
 @dataclass
 class TaskStatus(Fakable):
-    ID: int = 0
+    ID: int = 1
     Status: str = ''
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
         return asdict(self)
 
-statuses = []
-available_statuses = ["Preparing", "Synching", "Running", "Completed", "Failed"]
-for status in available_statuses:
-    s = TaskStatus().fake()
-    s['Status'] = status
-    statuses.append(s)
-df = pd.DataFrame(statuses)
-df.to_csv(f"res/TaskStatus.csv", index=False)
+@dataclass
+class Volume(Fakable):
+    ID: int = 1
+    TaskID: int = 1
+    host_path: str = ""
+    container_path: str = "random/path"
+
+    def random_path(self):
+        path = ""
+        for _ in range(random.randint(1, 8)):
+            path += faker.word() + "/"
+        return path
+
+    def fake(self) -> dict:
+        if random.random() > 0.7:
+            path = self.random_path()
+        else:
+            path = faker.url() + "file" + random.choice(['.csv', ".pth", ".trt", ".hdf5", ".db"])
+        
+        self.host_path = path
+        self.container_path = self.random_path()
+        self.TaskID =  random.randint(1, Fakable.max_id_for("Task"))
+
+        return asdict(self)
 
 
 
-to_generate = [Image, Dispatcher, Node, Task]
+to_generate = [Image, Dispatcher, Node, TaskStatus, Task, Volume]
 
 for gen in to_generate:
     data = []
