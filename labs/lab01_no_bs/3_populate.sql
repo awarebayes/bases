@@ -8,7 +8,7 @@ FROM '/res/TaskStatus.csv'
 DELIMITER ','
 CSV HEADER;
 
-COPY nodes(id, ip, device_count)
+COPY nodes(id, ip, device_count, ram)
 FROM '/res/Node.csv'
 DELIMITER ','
 CSV HEADER;

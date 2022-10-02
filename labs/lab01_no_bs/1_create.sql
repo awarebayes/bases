@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS nodes
 (
     id INT NOT NULL PRIMARY KEY,
     ip VARCHAR(32) NOT NULL,
-    device_count INT -- CHECK(device_count >= 0)
+    device_count INT, -- CHECK(device_count >= 0)
+    ram REAL
 );
 
 CREATE TABLE IF NOT EXISTS dispatchers
@@ -57,7 +58,9 @@ CREATE  TABLE IF NOT EXISTS tasks
 
     -- FK
     dispatcher_id INT,
-    FOREIGN KEY (dispatcher_id) REFERENCES dispatchers(id)
+    FOREIGN KEY (dispatcher_id) REFERENCES dispatchers(id),
+
+    time_created TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS volumes
@@ -65,7 +68,7 @@ CREATE TABLE IF NOT EXISTS volumes
     id INT NOT NULL PRIMARY KEY,
 
     task_id INT,
-    FOREIGN KEY (task_id) REFERENCES tasks(id)
+    FOREIGN KEY (task_id) REFERENCES tasks(id),
 
     host_path VARCHAR(512),
     container_path VARCHAR(128)

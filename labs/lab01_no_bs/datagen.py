@@ -11,7 +11,7 @@ faker = faker.Faker()
 
 class Fakable:
 
-    id_cnt: Dict[str, int] = defaultdict(lambda: 1)
+    id_cnt: Dict[str, int] = defaultdict(lambda: 0)
 
     def fake_(self, super_base):
         for field in fields(self):
@@ -59,7 +59,7 @@ class Image(Fakable):
 
 @dataclass
 class Task(Fakable):
-    ID: int = 1
+    ID: int = 0
     Name: str = ''
     Project: str = ''
     NodeID: int     = 1
@@ -67,6 +67,7 @@ class Task(Fakable):
     NeedCUDA: bool = False
     Status: int = 0
     DispatcherID: int   = 1
+    TimeCreated: str = ''
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
@@ -77,13 +78,14 @@ class Task(Fakable):
         self.ImageID = random.randint(1, Fakable.max_id_for("Image"))
         self.Status = random.randint(1, Fakable.max_id_for("TaskStatus"))
         self.DispatcherID = random.randint(1, Fakable.max_id_for("Dispatcher"))
+        self.TimeCreated = str(faker.date_time_this_month())
 
         return asdict(self)
 
 
 @dataclass
 class Dispatcher(Fakable):
-    ID: int = 1
+    ID: int = 0
     Name: str = ''
     Email: str  = ''
     MatterMost: str = ''
@@ -99,21 +101,23 @@ class Dispatcher(Fakable):
 
 @dataclass
 class Node(Fakable):
-    ID: int = 1
+    ID: int = 0
     IP: str = ''
     DeviceCount: int = 0
+    RAM: float = 0
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
         self.IP = faker.ipv4()
         self.DeviceCount = random.randint(0, 8)
+        self.RAM = random.random() * 256
 
         return asdict(self)
 
 @dataclass
 class TaskStatus(Fakable):
-    ID: int = 1
+    ID: int = 0
     Status: str = ''
 
     def fake(self) -> dict:
@@ -122,8 +126,8 @@ class TaskStatus(Fakable):
 
 @dataclass
 class Volume(Fakable):
-    ID: int = 1
-    TaskID: int = 1
+    ID: int = 0
+    TaskID: int = 0
     host_path: str = ""
     container_path: str = "random/path"
 
@@ -134,6 +138,7 @@ class Volume(Fakable):
         return path
 
     def fake(self) -> dict:
+        super().fake_(self.__class__.__name__)
         if random.random() > 0.7:
             path = self.random_path()
         else:
