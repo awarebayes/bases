@@ -16,6 +16,9 @@ CREATE TABLE IF NOT EXISTS task_statuses
     status VARCHAR(128)
 );
 
+ALTER TABLE task_statuses
+ALTER COLUMN status TYPE VARCHAR(100);
+
 CREATE TABLE IF NOT EXISTS nodes
 (
     id INT NOT NULL PRIMARY KEY,

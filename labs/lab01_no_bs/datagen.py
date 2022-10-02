@@ -11,9 +11,9 @@ faker = faker.Faker()
 
 class Fakable:
 
-    id_cnt = defaultdict(lambda: 1)
+    id_cnt: Dict[str, int] = defaultdict(lambda: 1)
 
-    def fake_(self, super_base) -> Dict:
+    def fake_(self, super_base):
         for field in fields(self):
             if field.name == "ID":
                 self.id_cnt[super_base] = self.id_cnt[super_base] + 1
@@ -26,6 +26,7 @@ class Fakable:
                 setattr(self, field.name, random.random() * 100)
             elif field.type == str:
                 setattr(self, field.name, faker.word())
+            
 
     @staticmethod
     def max_id_for(foreign_key_name):
