@@ -9,7 +9,7 @@ select * from volumes v  where v.task_id in (select id from tasks t where t."nam
 -- 5. WHERE EXISTS
 -- ноды на которых нет никаких тасков
 select * from nodes where not exists (select 1 from tasks where tasks.node_id = nodes.id);
--- 6. SELECT with predicate comparison
+-- 6. SELECT wth predicate comparison
 select * from tasks t  where  t.id > all (select image_size from images i where i.image_name like 'a%');
 -- 7. SELECT with aggregate functions in columns
 select AVG(image_size), runtime from images group by runtime;
