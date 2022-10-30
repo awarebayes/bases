@@ -163,5 +163,6 @@ cython_debug/
 *.db
 *.html
 *.csv
+*.json
 
 .idea/
