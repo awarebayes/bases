@@ -1,15 +1,28 @@
 -- 1. select with comparison
-select id from volumes v  where  v.task_id = 7;
+select id from volumes v 
+where  v.task_id = 7;
 -- 2. select with BETWEEN
-select * from tasks t where t.time_created between  '2022-10-01 08:00' and '2022-10-02 09:00' order by time_created;
+select * from tasks t 
+where t.time_created between  '2022-10-01 08:00' and '2022-10-02 09:00' 
+order by time_created;
 -- 3. SELECT with LIKE
-select * from tasks t where t."name" like 'a%';
+select * from tasks t 
+where t.name like 'a%';
 -- 4. SELECT with IN
-select * from volumes v  where v.task_id in (select id from tasks t where t."name" like 'a%');
+select * from volumes v  
+where v.task_id in 
+(
+	select id from tasks t 
+	where t."name" like 'a%'
+);
 -- 5. WHERE EXISTS
 -- ноды на которых нет никаких тасков
-select * from nodes where not exists (select 1 from tasks where tasks.node_id = nodes.id);
--- 6. SELECT wth predicate comparison
+select * from nodes 
+where not exists (
+	select 1 from tasks 
+	where tasks.node_id = nodes.id
+);
+-- 6. SELECT with predicate comparison
 select * from tasks t  where  t.id > all (select image_size from images i where i.image_name like 'a%');
 -- 7. SELECT with aggregate functions in columns
 select AVG(image_size), runtime from images group by runtime;
@@ -49,7 +62,15 @@ union
 select avg_size_cuda as Criteria, image_name from images i join 
 	(select avg(image_size) as avg_size_cuda, need_device  from images group by need_device) as dev on dev.need_device = i.need_device;
 -- 13. Инструкция SELECT, использующая вложенные подзапросы с уровнем вложенности 3. 
-select ip from nodes n where n.id in (select node_id from tasks t where t.id in (select id from task_statuses ts where ts.status like 'a%'));
+select ip from nodes n where n.id in 
+(
+	select node_id from tasks t where t.id in 
+	(
+		select id from (
+			select * from task_statuses ts where ts.status like 'a%'
+		) t3 where status like 'ab%'
+	)
+);
 -- 14. Инструкция SELECT, консолидирующая данные с помощью предложения GROUP BY, но без предложения HAVING. 
 -- Для каждого таска имя которого начинается на a получить кол-во видеокарт на ноде
 select t."name", n.device_count, avg(n.device_count), min(n.device_count) 
@@ -57,11 +78,19 @@ select t."name", n.device_count, avg(n.device_count), min(n.device_count)
 	group by t.id, n.device_count;
 -- 15. Инструкция SELECT, консолидирующая данные с помощью предложения GROUP BY и предложения HAVING. 
 -- avg первая часть ip ноды у которой больше среднего видеокарт
-select s.device_count, avg(first_ip) from (
-	select *, split_part(ip::text, '.', 1)::int as first_ip from nodes
-	) as s
-	group by s.device_count
-	having s.device_count > (select avg(device_count) as MDevice from nodes);
+
+-- REDO с аггрегатной функией
+
+--select s.device_count, avg(first_ip) from (
+--	select *, split_part(ip::text, '.', 1)::int as first_ip from nodes
+--	) as s
+--	group by s.device_count
+--	having s.device_count > (select avg(device_count) as MDevice from nodes);
+
+select device_count, avg(ram) from nodes
+	group by device_count
+	having avg(ram) > 100;
+
 -- 16. Однострочная инструкция INSERT, выполняющая вставку в таблицу одной строки значений.
 insert into nodes(id, ip, device_count) values(1001, '203.23.12.3', 3);
 -- 17.  Многострочная инструкция INSERT, выполняющая вставку в таблицу результирующего набора данных вложенного подзапроса
@@ -91,7 +120,6 @@ with CTE (dev_cnt, num_of_tasks) as (
 select dev_cnt, num_of_tasks from CTE;
 
 -- 23. Инструкция SELECT, использующая рекурсивное обобщенное табличное выражение
-
 create table employees (
 	employee_id serial primary key,
 	full_name varchar not null,
