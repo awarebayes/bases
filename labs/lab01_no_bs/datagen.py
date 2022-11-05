@@ -1,13 +1,19 @@
 from collections import defaultdict
-import faker 
+import faker
 import random
 from dataclasses import dataclass, asdict, fields
 from typing import Dict
 import pandas as pd
 from tqdm import tqdm
 
-docker_images = pd.read_csv('res/docker_images.csv', index_col=False, header=0).transpose().iloc[0].tolist()
+docker_images = (
+    pd.read_csv("res/docker_images.csv", index_col=False, header=0)
+    .transpose()
+    .iloc[0]
+    .tolist()
+)
 faker = faker.Faker()
+
 
 class Fakable:
 
@@ -26,7 +32,6 @@ class Fakable:
                 setattr(self, field.name, random.random() * 100)
             elif field.type == str:
                 setattr(self, field.name, faker.word())
-            
 
     @staticmethod
     def max_id_for(foreign_key_name):
@@ -38,21 +43,37 @@ class Fakable:
 @dataclass
 class Image(Fakable):
     ID: int = 0
-    Owner: str = ''
-    Name: str = ''
+    Owner: str = ""
+    Name: str = ""
     Downloads: int = 0
     NeedDevice: bool = False
     ImageSize: float = 0.0
-    DockerVersion: str = ''
-    Runtime: str = ''
+    DockerVersion: str = ""
+    Runtime: str = ""
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
 
         self.Owner = faker.company()
         self.Name = random.choice(docker_images)
-        self.DockerVersion = str(random.randint(0, 100)) + "." + str(random.randint(0, 100)) + "." + str(random.randint(0, 100))
-        self.Runtime = random.choice(["nvidia-docker", "docker", "containerd", "podman", "cri-o", "docker-compose", "docker-x11"])
+        self.DockerVersion = (
+            str(random.randint(0, 100))
+            + "."
+            + str(random.randint(0, 100))
+            + "."
+            + str(random.randint(0, 100))
+        )
+        self.Runtime = random.choice(
+            [
+                "nvidia-docker",
+                "docker",
+                "containerd",
+                "podman",
+                "cri-o",
+                "docker-compose",
+                "docker-x11",
+            ]
+        )
 
         return asdict(self)
 
@@ -60,14 +81,14 @@ class Image(Fakable):
 @dataclass
 class Task(Fakable):
     ID: int = 0
-    Name: str = ''
-    Project: str = ''
-    NodeID: int     = 1
+    Name: str = ""
+    Project: str = ""
+    NodeID: int = 1
     ImageID: int = 1
     NeedCUDA: bool = False
     Status: int = 0
-    DispatcherID: int   = 1
-    TimeCreated: str = ''
+    DispatcherID: int = 1
+    TimeCreated: str = ""
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
@@ -86,9 +107,9 @@ class Task(Fakable):
 @dataclass
 class Dispatcher(Fakable):
     ID: int = 0
-    Name: str = ''
-    Email: str  = ''
-    MatterMost: str = ''
+    Name: str = ""
+    Email: str = ""
+    MatterMost: str = ""
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
@@ -99,10 +120,11 @@ class Dispatcher(Fakable):
 
         return asdict(self)
 
+
 @dataclass
 class Node(Fakable):
     ID: int = 0
-    IP: str = ''
+    IP: str = ""
     DeviceCount: int = 0
     RAM: float = 0
 
@@ -115,14 +137,16 @@ class Node(Fakable):
 
         return asdict(self)
 
+
 @dataclass
 class TaskStatus(Fakable):
     ID: int = 0
-    Status: str = ''
+    Status: str = ""
 
     def fake(self) -> dict:
         super().fake_(self.__class__.__name__)
         return asdict(self)
+
 
 @dataclass
 class Volume(Fakable):
@@ -142,14 +166,17 @@ class Volume(Fakable):
         if random.random() > 0.7:
             path = self.random_path()
         else:
-            path = faker.url() + "file" + random.choice(['.csv', ".pth", ".trt", ".hdf5", ".db"])
-        
+            path = (
+                faker.url()
+                + "file"
+                + random.choice([".csv", ".pth", ".trt", ".hdf5", ".db"])
+            )
+
         self.host_path = path
         self.container_path = self.random_path()
-        self.TaskID =  random.randint(1, Fakable.max_id_for("Task"))
+        self.TaskID = random.randint(1, Fakable.max_id_for("Task"))
 
         return asdict(self)
-
 
 
 to_generate = [Image, Dispatcher, Node, TaskStatus, Task, Volume]
